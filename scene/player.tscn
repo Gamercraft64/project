@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://bcacplqdymka0"]
+
+[ext_resource type="Script" uid="uid://ghjby7h3rimb" path="res://script/player.gd" id="1_ct4mp"]
+[ext_resource type="Texture2D" uid="uid://csexukvyv6bhu" path="res://assets/Players/Tilemap/tilemap.png" id="2_s4jxa"]
+[ext_resource type="Script" uid="uid://dryhq76nry2g1" path="res://script/gun.gd" id="3_oh5ij"]
+[ext_resource type="Texture2D" uid="uid://cufueuhuapxto" path="res://assets/Weapons/Tilemap/tilemap.png" id="4_hp4bs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iqpdx"]
+size = Vector2(15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iibxp"]
+atlas = ExtResource("2_s4jxa")
+region = Rect2(2, 3, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtoa7"]
+atlas = ExtResource("2_s4jxa")
+region = Rect2(26, 3, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iqpdx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iibxp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtoa7")
+}],
+"loop": false,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_ct4mp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, 0.5)
+shape = SubResource("RectangleShape2D_iqpdx")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 12.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_iqpdx")
+animation = &"walk"
+
+[node name="gun pivot" type="Node2D" parent="."]
+script = ExtResource("3_oh5ij")
+
+[node name="gun" type="Sprite2D" parent="gun pivot"]
+position = Vector2(18, 3)
+texture = ExtResource("4_hp4bs")
+hframes = 10
+vframes = 4
+frame = 5
+
+[node name="Marker2D" type="Marker2D" parent="gun pivot/gun"]
+position = Vector2(10, -2)
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

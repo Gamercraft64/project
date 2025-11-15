@@ -16,6 +16,6 @@ func _shoot():
 		var bullet = bullet_scene.instantiate()
 		bullet.global_rotation = self.global_rotation
 		bullet.global_position = $gun/Marker2D.global_position
-		get_parent().add_child(bullet)
+		get_tree().current_scene.add_child(bullet)
 		
 		

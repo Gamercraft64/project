@@ -1,64 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://em1n1eti4la1"]
+[gd_scene load_steps=4 format=3 uid="uid://em1n1eti4la1"]
 
-[ext_resource type="Script" uid="uid://ghjby7h3rimb" path="res://script/player.gd" id="1_iibxp"]
-[ext_resource type="Texture2D" uid="uid://csexukvyv6bhu" path="res://assets/Players/Tilemap/tilemap.png" id="2_iibxp"]
-[ext_resource type="Texture2D" uid="uid://cufueuhuapxto" path="res://assets/Weapons/Tilemap/tilemap.png" id="3_dtoa7"]
-[ext_resource type="Script" uid="uid://dryhq76nry2g1" path="res://script/gun.gd" id="3_iqpdx"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_iqpdx"]
-size = Vector2(15, 15)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_iibxp"]
-atlas = ExtResource("2_iibxp")
-region = Rect2(2, 3, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dtoa7"]
-atlas = ExtResource("2_iibxp")
-region = Rect2(26, 3, 24, 24)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_iqpdx"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_iibxp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dtoa7")
-}],
-"loop": false,
-"name": &"walk",
-"speed": 5.0
-}]
+[ext_resource type="PackedScene" uid="uid://bcacplqdymka0" path="res://scene/player.tscn" id="1_iibxp"]
+[ext_resource type="PackedScene" uid="uid://bb0pgrmv31ybo" path="res://scene/enemy.tscn" id="2_dtoa7"]
+[ext_resource type="PackedScene" uid="uid://dtukqousrc5e" path="res://scene/game_over.tscn" id="3_dtoa7"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-script = ExtResource("1_iibxp")
+[node name="player" parent="." instance=ExtResource("1_iibxp")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(-2.5, 0.5)
-shape = SubResource("RectangleShape2D_iqpdx")
+[node name="game over" parent="player" instance=ExtResource("3_dtoa7")]
+offset_left = -179.0
+offset_top = -108.0
+offset_right = -179.0
+offset_bottom = -108.0
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-position_smoothing_speed = 12.0
+[node name="enemy_manager" type="Node2D" parent="."]
+position = Vector2(-179, -108)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
-sprite_frames = SubResource("SpriteFrames_iqpdx")
-animation = &"walk"
+[node name="enemy" parent="enemy_manager" instance=ExtResource("2_dtoa7")]
+position = Vector2(248, 106)
 
-[node name="gun pivot" type="Node2D" parent="CharacterBody2D"]
-script = ExtResource("3_iqpdx")
-
-[node name="gun" type="Sprite2D" parent="CharacterBody2D/gun pivot"]
-position = Vector2(18, 3)
-texture = ExtResource("3_dtoa7")
-hframes = 10
-vframes = 4
-frame = 5
-
-[node name="Marker2D" type="Marker2D" parent="CharacterBody2D/gun pivot/gun"]
-position = Vector2(10, -2)
-
-[connection signal="animation_finished" from="CharacterBody2D/AnimatedSprite2D" to="CharacterBody2D" method="_on_animated_sprite_2d_animation_finished"]
+[node name="enemy2" parent="enemy_manager" instance=ExtResource("2_dtoa7")]
+position = Vector2(4, 181)

@@ -1,6 +1,7 @@
 extends CharacterBody2D
 @export var speed = 100.00
 @onready var animation = $AnimatedSprite2D
+@export var health = 10
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,9 +31,15 @@ func _movement(delta):
 		motion.y += 1
 		animation.play("walk")
 	motion = motion.normalized()
-	velocity = motion * speed * delta
+	velocity = motion * speed
 	move_and_slide()
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	animation.frame = 0
+
+
+func take_damage(damage):
+	health -= damage 
+	if health <= 0:
+		$"game over"._game_over()

@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://bb0pgrmv31ybo"]
+
+[ext_resource type="Script" uid="uid://cukybg7coje87" path="res://script/enemygd.gd" id="1_f87vc"]
+[ext_resource type="Texture2D" uid="uid://cp0pannep8esn" path="res://assets/Enemies/Tilemap/tilemap.png" id="1_h08p8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f87vc"]
+size = Vector2(18, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8u16h"]
+atlas = ExtResource("1_h08p8")
+region = Rect2(2, 75, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7koy"]
+atlas = ExtResource("1_h08p8")
+region = Rect2(26, 75, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yvcfn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8u16h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b7koy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="enemy" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="." groups=["enemy"]]
+script = ExtResource("1_f87vc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2, 2.5)
+shape = SubResource("RectangleShape2D_f87vc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Area2D"]
+sprite_frames = SubResource("SpriteFrames_yvcfn")
+
+[node name="Timer" type="Timer" parent="Area2D"]
+
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="timeout" from="Area2D/Timer" to="Area2D" method="_on_timer_timeout"]
